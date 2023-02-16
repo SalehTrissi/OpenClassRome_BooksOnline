@@ -1,7 +1,7 @@
 from pprint import pprint
 
 import constants
-from utils import get_data_from_one_book, save_books_data_in_csv, check_category, get_all_noms_and_urls_categorys, \
+from utils import html_parser, get_data_from_one_book, save_books_data_in_csv, check_category, get_all_noms_and_urls_categorys, \
     get_data_books_from_one_category, save_book_data_in_csv
 
 
@@ -22,4 +22,15 @@ def extracting_data_for_all_books_in_category():
     save_books_data_in_csv(category_url, category)
 
 
+def extracting_data_for_all_books_in_site():
+    for link in get_all_noms_and_urls_categorys()[0]:
+        response = html_parser(link)
+        category = response.find('div', {'class': 'page-header action'}).find('h1').text
+        print(category)
+        get_data_books_from_one_category(link)
+        print(get_data_books_from_one_category(link))
+        save_books_data_in_csv(link, category)
+
+
 # pprint(extracting_data_for_all_books_in_category())
+# extracting_data_for_all_books_in_site()

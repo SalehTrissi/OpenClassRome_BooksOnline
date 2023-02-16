@@ -9,7 +9,7 @@ import csv
 import constants
 
 
-def html_parsel(url: str):
+def html_parser(url: str):
     """
     Return le contenu de la page html
     :param url:https://books.toscrape.com/
@@ -26,7 +26,7 @@ def get_data_from_one_book(url: str):
     :param url: https://books.toscrape.com/catalogue/set-me-free_988/index.html
     :return: toutes les données pour un livre
     """
-    response = html_parsel(url)
+    response = html_parser(url)
 
     product_page_url = url
     title = response.find('title').text.strip()
@@ -53,7 +53,7 @@ def get_url_book_from_category(category_url: str):
     """Recuperation toutes les livres dans un category"""
     urls_books = []
     for page_url in get_pages_urls(category_url):
-        response = html_parsel(page_url)
+        response = html_parser(page_url)
         link_book = response.find_all('li', {'class': 'col-xs-6 col-sm-4 col-md-3 col-lg-3'})
         for links in link_book:
             urls_books.append(f"{constants.url}catalogue/" + links.find('a')['href'].strip('./'))
@@ -69,7 +69,7 @@ def get_data_books_from_one_category(category_url: str):
 
 
 def get_number_of_pages_category(category_url: str):
-    response = html_parsel(category_url)
+    response = html_parser(category_url)
     numbers_results = response.find('div', {'class': 'col-sm-8 col-md-9'}).find('strong').text
     numbers_of_pages = math.ceil(int(numbers_results) / 20)
     return numbers_of_pages
@@ -97,7 +97,7 @@ def get_all_noms_and_urls_categorys():
     Récupère tous les liens et les nomes de toutes les catégories
     :return: all_noms_categorys, all_noms_categorys
     """
-    response = html_parsel(constants.url)
+    response = html_parser(constants.url)
     all_urls_categorys = []
     all_noms_categorys = []
     list_books = response.find('ul', {'class': 'nav nav-list'}).find('ul').find_all('li')
