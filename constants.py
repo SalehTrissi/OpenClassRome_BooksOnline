@@ -9,6 +9,7 @@ MENU = '''
                     Choisissez une option :
                     
                     1 : Extracting data from a book. (Phase 1) 
+                    2 : Extracting data for all books in the select category. (Phase 2)
                     2 : Quitter l'application
 -------------------------------------------------------------------------------
 '''

@@ -1,5 +1,5 @@
 import constants
-from scripting import extracting_data_from_a_book
+from scripting import extracting_data_from_a_book, extracting_data_for_all_books_in_category
 
 
 def main_menu():
@@ -8,12 +8,15 @@ def main_menu():
     """
     print(constants.MENU)
     choice = input('Votre choix : ')
-    selection_available = ["1", "2"]
+    selection_available = ["1", "2", "3"]
     while choice in selection_available:
         if choice == "1":
             extracting_data_from_a_book()
             exit()
         elif choice == "2":
+            extracting_data_for_all_books_in_category()
+            exit()
+        elif choice == "3":
             print("Au revoir")
             exit()
 
