@@ -1,7 +1,8 @@
-from pprint import pprint
+import os
 
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 import constants
 
@@ -46,4 +47,22 @@ def get_data_from_one_book(url: str):
         product_description, category, review_rating, image_url
 
 
-# pprint(get_data_from_one_book('https://books.toscrape.com/catalogue/set-me-free_988/index.html'))
+def save_books_data_in_csv(category_url: str, category):
+    """
+    Enregistrer les informations des livres dans un fichier csv
+    :return:
+    """
+    try:
+        os.mkdir(os.getcwd() + "/csv")
+    except:
+        pass
+    os.chdir(os.getcwd() + "/csv")
+    with open(category + '.csv', "w", newline="") as file:
+        write = csv.writer(file, delimiter=';')
+        write.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax",
+                        "price_excluding_tax", "number_available", "product_description", "category",
+                        "review_rating", "image_url"])
+        write.writerow(get_data_from_one_book(category_url))
+
+# print(get_data_from_one_book(constants.url_book_set_me_free))
+# save_book_data_in_csv(constants.url_book_set_me_free, 'Young Adult')
