@@ -1,6 +1,5 @@
 import math
 import os
-from pprint import pprint
 
 import requests
 from bs4 import BeautifulSoup
@@ -123,6 +122,20 @@ def check_category():
         category = input("Quelle catégorie choisir ? ")
     print(f"Vous avez choisi {category}")
     return category
+
+
+def extract_images(link):
+    print(link)
+    response = html_parser(link)
+    images = response.find_all('img')
+    for image in images:
+        name_image = image['alt'].strip()
+        link_image = f'{constants.url}/' + image['src'].lstrip('./')
+        with open(name_image.replace(':', '-') + '.jpg', 'wb') as file:
+            img = requests.get(link_image)
+            file.write(img.content)
+            print('Writing: ', name_image)
+            print(link_image)
 
 
 def save_book_data_in_csv(category_url: str, category):

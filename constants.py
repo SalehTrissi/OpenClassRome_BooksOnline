@@ -7,10 +7,11 @@ MENU = '''
                 Bienvenue dans notre programme Books to Scrape
                 
                     Choisissez une option :
-                    
                     1 : Extracting data from a book. (Phase 1) 
                     2 : Extracting data for all books in the select category. (Phase 2)
                     3 : Extracting data for all books in the site. (Phase 3)
-                    4 : Quitter l'application
+                    4 : Extracting images for all books in the select category. (Phase 4)
+                    5 : Extracting images for all books in the site. (Phase 4)
+                    6 : Quitter l'application
 -------------------------------------------------------------------------------
 '''

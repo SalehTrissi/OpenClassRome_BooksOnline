@@ -1,8 +1,10 @@
+import os
 from pprint import pprint
 
 import constants
-from utils import html_parser, get_data_from_one_book, save_books_data_in_csv, check_category, get_all_noms_and_urls_categorys, \
-    get_data_books_from_one_category, save_book_data_in_csv
+from utils import html_parser, get_data_from_one_book, save_books_data_in_csv, check_category, \
+    get_all_noms_and_urls_categorys, \
+    get_data_books_from_one_category, save_book_data_in_csv, extract_images
 
 
 def extracting_data_from_a_book():
@@ -32,5 +34,32 @@ def extracting_data_for_all_books_in_site():
         save_books_data_in_csv(link, category)
 
 
+def extracting_images_from_category():
+    try:
+        os.mkdir(os.getcwd()+"/images")
+    except:
+        pass
+    os.chdir(os.getcwd()+"/images")
+    nams_categorys = get_all_noms_and_urls_categorys()[1]
+    urls_categorys = get_all_noms_and_urls_categorys()[0]
+    category = check_category()
+    index = [link_text for link_text in nams_categorys].index(category)
+    category_url = urls_categorys[index]
+    extract_images(category_url)
+
+
+def extracting_all_images_from_the_site():
+    try:
+        os.mkdir(os.getcwd()+"/all-images")
+    except:
+        pass
+    os.chdir(os.getcwd()+"/all-images")
+    links = get_all_noms_and_urls_categorys()[0]
+    for link in links:
+        extract_images(link)
+
+
 # pprint(extracting_data_for_all_books_in_category())
 # extracting_data_for_all_books_in_site()
+# extracting_images_from_category()
+extracting_all_images_from_the_site()
