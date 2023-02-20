@@ -12,6 +12,6 @@ MENU = '''
                     3 : Extracting data for all books in the site. (Phase 3)
                     4 : Extracting images for all books in the select category. (Phase 4)
                     5 : Extracting images for all books in the site. (Phase 4)
-                    6 : Quitter l'application
+                    6 : Exit the application
 -------------------------------------------------------------------------------
 '''

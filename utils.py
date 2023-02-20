@@ -31,6 +31,7 @@ def get_data_from_one_book(url: str):
     title = response.find('title').text.strip()
     review_rating = response.find('p', {'class': 'star-rating'})['class'][1]
     div_product_description = response.find('div', {'id': 'product_description'})
+
     try:
         product_description = div_product_description.find_next_sibling().text
     except:
@@ -38,8 +39,8 @@ def get_data_from_one_book(url: str):
 
     table_product_information = response.find('table', {'class': 'table table-striped'}).find_all('td')
     universal_product_code = table_product_information[0].text
-    price_including_tax = table_product_information[3].text
-    price_excluding_tax = table_product_information[2].text
+    price_including_tax = table_product_information[3].text.replace('Â', '-')
+    price_excluding_tax = table_product_information[2].text.replace('Â', '-')
     number_available = table_product_information[5].text
     category = response.find('ul', {'class': 'breadcrumb'}).find_all('li')[2].text.strip()
     image_url = f"{constants.url}" + response.find('img')['src'].strip('./')
@@ -129,9 +130,10 @@ def extract_images(link):
     response = html_parser(link)
     images = response.find_all('img')
     for image in images:
-        name_image = image['alt'].strip()
+        name_image = image['alt'].replace(":", " ").replace("/", " ").replace("\"", " ").replace("*", " ")\
+            .replace("?", " ").lstrip()
         link_image = f'{constants.url}/' + image['src'].lstrip('./')
-        with open(name_image.replace(':', '-') + '.jpg', 'wb') as file:
+        with open(name_image + '.jpg', 'wb') as file:
             img = requests.get(link_image)
             file.write(img.content)
             print('Writing: ', name_image)
@@ -140,7 +142,7 @@ def extract_images(link):
 
 def save_book_data_in_csv(category_url: str, category):
     """
-    Enregistrer les informations des livres dans un fichier csv
+    Enregistrer les informations d'un livre dans un fichier csv
     :return:
     """
     try:
@@ -165,8 +167,7 @@ def save_books_data_in_csv(category_url: str, category):
         os.mkdir(os.getcwd() + "/csv")
     except:
         pass
-    os.chdir(os.getcwd() + "/csv")
-    with open(category + '.csv', "w", newline="") as file:
+    with open(f"csv/{category}.csv", "w", newline="", encoding='utf-8') as file:
         write = csv.writer(file, delimiter=';')
         write.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax",
                         "price_excluding_tax", "number_available", "product_description", "category",
@@ -183,3 +184,5 @@ def save_books_data_in_csv(category_url: str, category):
 # pprint(check_category())
 # pprint(get_all_data_books_from_one_category('https://books.toscrape.com/catalogue/category/books/mystery_3/index.html'))
 # save_books_data_in_csv('https://books.toscrape.com/catalogue/category/books/mystery_3/index.html', 'Mystery')
+# pprint(get_data_from_one_book('https://books.toscrape.com/catalogue/in-a-dark-dark-wood_963/index.html'))
+# save_books_data_in_csv('https://books.toscrape.com/catalogue/category/books/classics_6/index.html', 'Classics')
