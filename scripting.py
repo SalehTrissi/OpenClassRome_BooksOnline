@@ -41,6 +41,7 @@ def extracting_images_from_category():
     index = [link_text for link_text in nams_categorys].index(category)
     category_url = urls_categorys[index]
     try:
+        os.mkdir(os.getcwd() + f"/images/")
         os.mkdir(os.getcwd()+f"/images/{category}")
     except:
         pass

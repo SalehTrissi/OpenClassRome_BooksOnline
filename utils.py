@@ -26,7 +26,6 @@ def get_data_from_one_book(url: str):
     :return: toutes les données pour un livre
     """
     response = html_parser(url)
-
     product_page_url = url
     title = response.find('title').text.strip()
     review_rating = response.find('p', {'class': 'star-rating'})['class'][1]
@@ -34,13 +33,13 @@ def get_data_from_one_book(url: str):
 
     try:
         product_description = div_product_description.find_next_sibling().text
-    except:
+    except TypeError:
         product_description = ''
 
     table_product_information = response.find('table', {'class': 'table table-striped'}).find_all('td')
     universal_product_code = table_product_information[0].text
-    price_including_tax = table_product_information[3].text.replace('Â', '-')
-    price_excluding_tax = table_product_information[2].text.replace('Â', '-')
+    price_including_tax = table_product_information[3].text.replace('Â', '')
+    price_excluding_tax = table_product_information[2].text.replace('Â', '')
     number_available = table_product_information[5].text
     category = response.find('ul', {'class': 'breadcrumb'}).find_all('li')[2].text.strip()
     image_url = f"{constants.url}" + response.find('img')['src'].strip('./')
@@ -155,7 +154,7 @@ def save_book_data_in_csv(category_url: str, category):
         write.writerow(["product_page_url", "universal_product_code", "title", "price_including_tax",
                         "price_excluding_tax", "number_available", "product_description", "category",
                         "review_rating", "image_url"])
-        write.writerows(get_data_from_one_book(category_url))
+        write.writerows([get_data_from_one_book(category_url)])
 
 
 def save_books_data_in_csv(category_url: str, category):
